@@ -17,6 +17,10 @@
     background-size: 675%;
   }
 
+  .cell-hide {
+    background-image: none; 
+  }
+
   .col-0 {
     background-position-x: -28px;
   }
