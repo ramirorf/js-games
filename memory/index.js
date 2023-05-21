@@ -27,17 +27,20 @@ function cellClick(cell) {
         } else {
 
             // comprobar si es la misma imagen
-            if(mismaImagen(celda_saellecionada, cell)) {       
+            if(mismaImagen(celda_seleccionada, cell)) {       
                 
                 // si todas están descubiertas
-                if(document.getElementsByClassName('cell-hide')[0].length == 0) {
-                    alert('¡¡Has ganado!!');
-                    
-                    // dejar el estado como inicialmente
-                    celda_seleccionada = null;
-                    document.getElementsByClassName("cell")[0].forEach(function() {
-                        this.classList.add("cell-hide");
-                    });
+                if(document.getElementsByClassName('cell-hide').length == 0) {
+                    setTimeout(() => {
+                        alert('¡¡Has ganado!!');
+                        
+                        // dejar el estado como inicialmente
+                        celda_seleccionada = null;
+                        for( i=0; i!= document.getElementsByClassName("cell").length ;i++) {
+                            document.getElementsByClassName("cell")[i].classList.add("cell-hide");
+                        }
+                    }, 500);
+
                 }
             } else {
                 // dejar el tablero como al principio del turno
@@ -55,11 +58,11 @@ function mismaImagen(celda1, celda2) {
     var row = null;
     var col = null;
 
-    celda1.classList.forEach(function() {
-        if (this.startsWith('col-')) {
-            col = this;
-        } else if (this.startsWith('row-')) {
-            row = this;
+    celda1.classList.forEach(x => {
+        if (x.startsWith('col-')) {
+            col = x;
+        } else if (x.startsWith('row-')) {
+            row = x;
         }
     });
 
