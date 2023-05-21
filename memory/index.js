@@ -1,20 +1,65 @@
 
+const IMAGES_COLS=6; 
+const IMAGES_ROWS=6; 
+const IMAGES_MAX=IMAGES_COLS*IMAGES_ROWS;
+const CELLS_COLS = 6;
+const CELLS_ROWS = 6;
+const CELLS=CELLS_COLS*CELLS_ROWS;
+
 var celda_seleccionada=null;
-var celdas_descubiertas=[];
+var celdas_imagen=[];
 
 function init() {
     const boardElement = document.querySelector('.board');
 
+    // Obtener disposición de imagenes
+    celdas_imagen=obtenerCeldasImagen(CELLS, CELLS / 2 );
+    
     // Crear las celdas del tablero
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < CELLS; i++) {
+
         const cell = document.createElement('div');
-//        cell.className = 'cell row-' + Math.floor(i/6) + ' col-' + i%6 + ' cell-hide';
-        cell.className = 'cell row-' + 0 + ' col-' + 0 + ' cell-hide';
+
+        cell.className = 'cell row-' + Math.floor(celdas_imagen[i]/6) + ' col-' + celdas_imagen[i]%6 + ' cell-hide';
+        //cell.className = 'cell row-' + 0 + ' col-' + 0 + ' cell-hide';
+
         cell.addEventListener('click', () => cellClick(cell));
         boardElement.appendChild(cell);
-
-        celdas_descubiertas[i]=false;
     }
+}
+
+function obtenerCeldasImagen(celdas_max, images_max) {
+    var celdas_imagen=[];
+    
+    for(i=0 ; i!=celdas_max; i++) {
+        celdas_imagen[i]=-1;
+    }
+
+    var celdas_imagen_colocadas=[];
+    for(i=0 ; i!=images_max; i++) {
+        {
+            const offset = Math.floor(Math.random() * celdas_max);
+            for(j=0; j!=celdas_max; j++) {
+                const index = (offset+j) % celdas_max;
+                if(celdas_imagen[index] == -1) {
+                    celdas_imagen[index] = i;
+                    break; 
+                }
+            }
+        }
+        {
+            const offset = Math.floor(Math.random() * celdas_max);
+            for(j=0; j!=celdas_max; j++) {
+                const index = (offset+j) % celdas_max;
+                if(celdas_imagen[index] == -1) {
+                    celdas_imagen[index] = i;
+                    break; 
+                }
+            }
+        }
+    }
+
+    return celdas_imagen;
 }
 
 function cellClick(cell) {
@@ -27,7 +72,9 @@ function cellClick(cell) {
         } else {
 
             // comprobar si es la misma imagen
-            if(mismaImagen(celda_seleccionada, cell)) {       
+            if(mismaImagen(celda_seleccionada, cell)) {
+                // la celda seleccionada anterior se queda seleccionada (igual que la actual)       
+                celda_seleccionada = null;
                 
                 // si todas están descubiertas
                 if(document.getElementsByClassName('cell-hide').length == 0) {
