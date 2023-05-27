@@ -21,20 +21,16 @@ function init() {
         addCell(i);
     }
 
-    // obtener posición de la cabeza
-    snake_pos_x=20;
-    snake_pos_y=20;
-
-    // dibujar la serpiente
-    drawSnake(snake_pos_x,snake_pos_y);
+    // inicializar la serpiente
+    initSnake();
 
     // evento de pulsación de tecla
     document.addEventListener('keydown', (event) => {
         switch(event.key) {
-            case 'ArrowUp': moveSnake(-1,0); break; 
-            case 'ArrowDown': moveSnake(1,0); break; 
-            case 'ArrowLeft': moveSnake(0,-1); break; 
-            case 'ArrowRight': moveSnake(0,1); break; 
+            case 'ArrowUp': moveSnakeChecking(-1,0); break; 
+            case 'ArrowDown': moveSnakeChecking(1,0); break; 
+            case 'ArrowLeft': moveSnakeChecking(0,-1); break; 
+            case 'ArrowRight': moveSnakeChecking(0,1); break; 
         };
       }, false);    
 }
@@ -46,6 +42,28 @@ function addCell(i) {
 
     // vincular celda
     board.appendChild(cell);
+}
+
+function initSnake() {
+    // borrar la serpiente si existe:
+    removeSnake();
+
+    // obtener posición de la cabeza
+    snake_pos_x=20;
+    snake_pos_y=20;
+
+    // dibujar la serpiente
+    drawSnake(snake_pos_x,snake_pos_y);
+}
+
+function removeSnake() {
+    removeClass("cell-snake-head");
+    removeClass("cell-snake-tail");
+    removeClass("cell-snake-body");
+
+    for(i=0;i!=SNAKE_SIZE;i++) {
+        removeClass("cell-snake-"+i);
+    }
 }
 
 function drawSnake(x,y) {
@@ -62,6 +80,25 @@ function drawSnake(x,y) {
      // establecer la cola
      setClassByXY('cell-snake-tail',snake_pos_x-(SNAKE_SIZE-1),snake_pos_y);
      setClassByXY('cell-snake-'+(SNAKE_SIZE-1),snake_pos_x-(SNAKE_SIZE-1),snake_pos_y);
+}
+
+function moveSnakeChecking(incX,incY) {
+    // obtener posición de la celda de la cabeza
+    var snake_head_old = document.getElementsByClassName("cell-snake-head")[0];
+    var pos = getPos(snake_head_old);
+
+    // si la nueva cabeza no es válida
+    var snake_head_new = document.getElementsByClassName("cell-pos-"+(pos+(incX*CELLS_COL+incY)))[0];
+    if (snake_head_new.classList.contains("cell-snake-body") || snake_head_new.classList.contains("cell-snake-tail")) {
+        
+        // reiniciar
+        alert('¡¡Perdiste!!');
+        initSnake();
+    } else {
+
+        // mover
+        moveSnake(incX,incY);
+    }
 }
 
 function moveSnake(incX,incY) {
@@ -117,4 +154,15 @@ function setClassByXY(className,x,y) {
     // establecer la clase
     var item = document.getElementsByClassName("cell-pos-"+pos)[0];
     item.classList.add(className);
+}
+
+function removeClass(className) {
+    var items = document.getElementsByClassName(className);
+    if(items) {
+        for(j=items.length-1;j>=0;j--) {
+            if(items[j]) { 
+                items[j].classList.remove(className);
+            }
+        }
+    }
 }
