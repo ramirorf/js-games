@@ -2,12 +2,12 @@ const CELLS_COL=60;
 const CELLS_ROW=49;
 const CELLS=CELLS_COL*CELLS_ROW;
 
+const SNAKE_SIZE=10; 
 
 // Obtener tablero
 var board;
 var snake_pos_x;
 var snake_pos_y;
-var snake_tail=10;
 var contador=0;
 var puntos;
 
@@ -53,26 +53,60 @@ function drawSnake(x,y) {
      setClassByXY('cell-snake-head',snake_pos_x,snake_pos_y);
 
      // establecer cuerpo
-     for(i=0;i!=snake_tail;i++) {
+     setClassByXY('cell-snake-0',snake_pos_x-0,snake_pos_y);
+     for(i=1;i!=SNAKE_SIZE-1;i++) {
         setClassByXY('cell-snake-body',snake_pos_x-i,snake_pos_y);
+        setClassByXY('cell-snake-'+i,snake_pos_x-i,snake_pos_y);
      }
+
+     // establecer la cola
+     setClassByXY('cell-snake-tail',snake_pos_x-(SNAKE_SIZE-1),snake_pos_y);
+     setClassByXY('cell-snake-'+(SNAKE_SIZE-1),snake_pos_x-(SNAKE_SIZE-1),snake_pos_y);
 }
 
 function moveSnake(incX,incY) {
-    var snake_head_old = document.getElementsByClassName("cell-snake-head")[0];
-    var pos;
-    for(i=0;i!=snake_head_old.classList.length;i++) {
-        if (snake_head_old.classList[i].startsWith('cell-pos-')) {
-            pos = parseInt(snake_head_old.classList[i].substring('cell-pos-'.length));
-            console.log(pos);
-        }
+
+   // borrar el último elemento de la cola
+   var snake_tail_old = document.getElementsByClassName("cell-snake-tail")[0];
+   snake_tail_old.classList.remove('cell-snake-tail');
+   snake_tail_old.classList.remove('cell-snake-'+(SNAKE_SIZE-1));
+
+    // renumerar elementos
+    for(i=0;i!=SNAKE_SIZE-1;i++) {
+        var snake_item = document.getElementsByClassName("cell-snake-"+i)[0];
+        snake_item.classList.remove('cell-snake-'+i);
+        snake_item.classList.add('cell-snake-'+(i+1));
     }
 
-    snake_head_old.classList.remove('cell-snake-head');
-    snake_head_old.classList.remove('cell-snake-body');
+    // obtener la posición de la cabeza
+    var snake_head_old = document.getElementsByClassName("cell-snake-head")[0];
+    var pos = getPos(snake_head_old);
 
-    var item = document.getElementsByClassName("cell-pos-"+(pos+(incX*CELLS_COL+incY)))[0];
-    item.classList.add('cell-snake-head');
+    // convertir la antigua cabeza en cuerpo
+    snake_head_old.classList.remove('cell-snake-head');
+    snake_head_old.classList.add('cell-snake-body');
+    snake_head_old.classList.remove('cell-snake-0');
+    snake_head_old.classList.add('cell-snake-1');
+  
+    // convertir el hueco siguiente en la nueva cabeza 
+    var snake_head = document.getElementsByClassName("cell-pos-"+(pos+(incX*CELLS_COL+incY)))[0];
+    snake_head.classList.add('cell-snake-head');
+    snake_head.classList.add('cell-snake-0');
+
+    // marcar la nueva cola
+    var snake_tail = document.getElementsByClassName("cell-snake-"+(SNAKE_SIZE-1))[0];
+    snake_tail.classList.remove('cell-snake-body');
+    snake_tail.classList.add('cell-snake-tail');
+}
+
+function getPos(element) {
+    var pos;
+    for(i=0;i!=element.classList.length;i++) {
+        if (element.classList[i].startsWith('cell-pos-')) {
+            pos = parseInt(element.classList[i].substring('cell-pos-'.length));
+        }
+    }
+    return pos;
 }
 
 function setClassByXY(className,x,y) {

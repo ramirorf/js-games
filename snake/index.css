@@ -19,6 +19,6 @@
     background-color: #000;
   } 
 
-  .cell-snake-body {
+  .cell-snake-body, .cell-snake-tail {
     border: 1px solid #000;
   } 
