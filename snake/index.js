@@ -72,7 +72,7 @@ function moveSnake(incX,incY) {
    snake_tail_old.classList.remove('cell-snake-'+(SNAKE_SIZE-1));
 
     // renumerar elementos
-    for(i=0;i!=SNAKE_SIZE-1;i++) {
+    for(i=SNAKE_SIZE-2;i!=-1;i--) {
         var snake_item = document.getElementsByClassName("cell-snake-"+i)[0];
         snake_item.classList.remove('cell-snake-'+i);
         snake_item.classList.add('cell-snake-'+(i+1));
@@ -104,6 +104,7 @@ function getPos(element) {
     for(i=0;i!=element.classList.length;i++) {
         if (element.classList[i].startsWith('cell-pos-')) {
             pos = parseInt(element.classList[i].substring('cell-pos-'.length));
+            break;
         }
     }
     return pos;
