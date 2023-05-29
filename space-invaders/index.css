@@ -23,6 +23,14 @@
     background-position-y: -8px;
     background-position-x: -7px;
   }
+
+  .cell-hero {
+    background-image: url(images/starship.png);
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position-y: 1px;
+    background-position-x: 6px;
+  }
  
   .field {
     display: flex;
