@@ -1,0 +1,30 @@
+  .board {
+    display: flex;
+    flex-wrap: wrap;
+    width: 874px;
+    border: 1px solid #000000;
+  }
+
+  .cell {
+    border: 1px solid #d6d6d6;
+    width: 40px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .cell-monster {
+    background-image: url(images/invader.gif);
+    background-size: 137%;
+    background-repeat: no-repeat;
+    background-position-y: -8px;
+    background-position-x: -7px;
+  }
+ 
+  .field {
+    display: flex;
+  }
+
