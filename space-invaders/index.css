@@ -31,6 +31,15 @@
     background-position-y: 1px;
     background-position-x: 6px;
   }
+
+  .cell-hero-shot {
+    background-image: url(images/shot.png);
+    background-size: 35%;
+    background-repeat: no-repeat;
+    background-position-y: 1px;
+    background-position-x: 12px;
+  }
+
  
   .field {
     display: flex;
